@@ -76,15 +76,15 @@ namespace PoligHellman
                     }
                     else
                     {
-                        var qI = (long)Math.Pow(factor.q, i + 1);
-                        var aPow = solution.ModPow(G, (long)Math.Pow(factor.q, i - 1) * C[i - 1], MainN);
-                        var invEl = solution.inverseElement(aPow, MainN);
+                        var invEl = solution.inverseElement(
+                            solution.ModPow(G, (long)Math.Pow(factor.q, i - 1) * C[i - 1], MainN), 
+                            MainN
+                            );
                         var HI = solution.ModMultiple(PrevH, invEl, MainN);
-                        var HII = (long)solution.ModPow(HI, N / qI, MainN);
+                        var HII = (long)solution.ModPow(HI, N / (long)Math.Pow(factor.q, i + 1), MainN);
                         var GI = (long)solution.ModPow(G, N / factor.q, MainN);
-                        var t1 = solution.logB(GI, HII, MainN) % factor.q;
                         PrevH = (long)HI;
-                        C.Add(t1);
+                        C.Add(solution.logB(GI, HII, MainN) % factor.q);
                     }
 
                 }
